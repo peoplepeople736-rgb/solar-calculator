@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سولر کیلکولیٹر - LuxeSolar PK (جون 2026)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap');
+        
+        :root {
+            --primary: #00ff9d;
+            --bg: #0a0a0a;
+            --card: #111111;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a, #001a0f);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 42px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #00ff9d, #00cc7a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .calculator {
+            background: var(--card);
+            border-radius: 28px;
+            padding: 32px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+            border: 1px solid rgba(0,255,157,0.2);
+        }
+        
+        .step { display: none; }
+        .step.active { display: block; }
+        
+        .appliances {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .appliance {
+            background: #1a1a1a;
+            padding: 18px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            background: #222;
+            border: 1px solid #444;
+            border-radius: 12px;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .toggle-mode {
+            display: flex;
+            background: #222;
+            border-radius: 50px;
+            padding: 6px;
+            margin: 20px 0;
+        }
+        
+        .toggle-btn {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .toggle-btn.active {
+            background: var(--primary);
+            color: #0a0a0a;
+        }
+        
+        button {
+            background: var(--primary);
+            color: #0a0a0a;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,255,157,0.3);
+        }
+        
+        .result {
+            background: linear-gradient(135deg, #001a0f, #112211);
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 30px;
+            border: 2px solid var(--primary);
+        }
+        
+        .recommend {
+            background: #1a2a1a;
+            padding: 20px;
+            border-radius: 16px;
+            margin: 15px 0;
+        }
+        
+        .price-note {
+            font-size: 14px;
+            color: #aaa;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">LuxeSolar PK</div>
+            <h1>پریمیم سولر سسٹم کیلکولیٹر (جون 2026)</h1>
+            <p>تازہ مارکیٹ ریٹس • ایک وقت میں ایک چیز چلانے والا موڈ</p>
+        </div>
+        
+        <div class="calculator">
+            <div id="step1" class="step active">
+                <h2>گھر میں کتنی چیزیں ہیں؟</h2>
+                
+                <div class="toggle-mode">
+                    <div class="toggle-btn active" id="mode-sim" onclick="setMode('sim')">سب ایک ساتھ چلیں</div>
+                    <div class="toggle-btn" id="mode-seq" onclick="setMode('seq')">ایک وقت میں ایک چیز</div>
+                </div>
+                
+                <div class="appliances">
+                    <div class="appliance">
+                        <label>ایئر کنڈیشنر (1 ٹن) - 1200W</label>
+                        <input type="number" id="ac1" value="0" min="0">
+                    </div>
+                    <div class="appliance">
+                        <label>ایئر کنڈیشنر (1.5 ٹن) - 1800W</label>
+                        <input type="number" id="ac15" value="0" min="0">
+                    </div>
+                    <div class="appliance">
+                        <label>سیلنگ فین - 80W</label>
+                        <input type="number" id="fan" value="0" min="0">
+                    </div>
+                    <div class="appliance">
+                        <label>LED بلب - 10W</label>
+                        <input type="number" id="bulb" value="0" min="0">
+                    </div>
+                    <div class="appliance">
+                        <label>فریج - 350W</label>
+                        <input type="number" id="fridge" value="0" min="0">
+                    </div>
+                    <div class="appliance">
+                        <label>ٹی وی - 150W</label>
+                        <input type="number" id="tv" value="0" min="0">
+                    </div>
+                    <div class="appliance">
+                        <label>واٹر پمپ (1 HP) - 750W</label>
+                        <input type="number" id="pump" value="0" min="0">
+                    </div>
+                    <div class="appliance">
+                        <label>دیگر لوڈ (واٹ)</label>
+                        <input type="number" id="other" value="0" min="0">
+                    </div>
+                </div>
+                <br>
+                <button onclick="nextStep(2)">اگلا مرحلہ →</button>
+            </div>
+            
+            <div id="step2" class="step">
+                <h2>روزانہ استعمال کے اوقات</h2>
+                <div class="appliances">
+                    <div class="appliance">
+                        <label>AC استعمال (گھنٹے)</label>
+                        <input type="number" id="hoursAC" value="6" step="0.5">
+                    </div>
+                    <div class="appliance">
+                        <label>فین / لائٹس (گھنٹے)</label>
+                        <input type="number" id="hoursFan" value="12" step="0.5">
+                    </div>
+                </div>
+                <br>
+                <button onclick="calculateSolar()">تازہ ریٹس کے ساتھ حساب لگائیں</button>
+                <button onclick="nextStep(1)" style="background:#555;margin-left:10px;">پچھلا</button>
+            </div>
+            
+            <div id="results" class="step"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentMode = 'sim'; // sim = simultaneous, seq = sequential
+        
+        function setMode(mode) {
+            currentMode = mode;
+            document.getElementById('mode-sim').classList.toggle('active', mode === 'sim');
+            document.getElementById('mode-seq').classList.toggle('active', mode === 'seq');
+        }
+        
+        function nextStep(step) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+        }
+        
+        function calculateSolar() {
+            const ac1 = parseFloat(document.getElementById('ac1').value) || 0;
+            const ac15 = parseFloat(document.getElementById('ac15').value) || 0;
+            const fans = parseFloat(document.getElementById('fan').value) || 0;
+            const bulbs = parseFloat(document.getElementById('bulb').value) || 0;
+            const fridge = parseFloat(document.getElementById('fridge').value) || 0;
+            const tv = parseFloat(document.getElementById('tv').value) || 0;
+            const pump = parseFloat(document.getElementById('pump').value) || 0;
+            const other = parseFloat(document.getElementById('other').value) || 0;
+            
+            const hAC = parseFloat(document.getElementById('hoursAC').value) || 6;
+            const hOther = parseFloat(document.getElementById('hoursFan').value) || 12;
+            
+            // Daily consumption (Wh)
+            let totalWh = 0;
+            totalWh += ac1 * 1200 * hAC;
+            totalWh += ac15 * 1800 * hAC;
+            totalWh += fans * 80 * hOther;
+            totalWh += bulbs * 10 * hOther;
+            totalWh += fridge * 350 * 12;
+            totalWh += tv * 150 * 6;
+            totalWh += pump * 750 * 2;
+            totalWh += other * 8;
+            
+            const dailyKWh = (totalWh / 1000).toFixed(1);
+            
+            // Peak load calculation
+            let peakLoadW = 0;
+            if (currentMode === 'sim') {
+                peakLoadW = ac1*1200 + ac15*1800 + fans*80 + bulbs*10 + fridge*350 + tv*150 + pump*750 + other + 500;
+            } else {
+                // One at a time: take the highest single load
+                const loads = [
+                    ac1*1200, ac15*1800, fans*80, bulbs*10, 
+                    fridge*350, tv*150, pump*750, other
+                ];
+                peakLoadW = Math.max(...loads) + 300; // safety margin
+            }
+            
+            // System sizing
+            const peakSunHours = 4.8; // Pakistan average June 2026
+            let systemSizeKW = (dailyKWh / peakSunHours) * 1.35; // system losses
+            systemSizeKW = Math.ceil(systemSizeKW * 10) / 10;
+            
+            const panelWatt = 550;
+            const numPanels = Math.ceil((systemSizeKW * 1000) / panelWatt);
+            
+            // Inverter sized on peak load
+            let inverterKW = Math.ceil(peakLoadW / 1000 * 1.25);
+            if (inverterKW < 3) inverterKW = 3;
+            
+            // Battery
+            const batteryKWh = Math.ceil(dailyKWh * 0.6);
+            
+            // June 2026 Prices
+            const panelRate = 44; // Rs/W
+            const panelCost = Math.round(systemSizeKW * 1000 * panelRate);
+            const inverterCost = inverterKW * 55000;
+            const batteryCost = Math.round(batteryKWh * 45000);
+            const installCost = 180000;
+            const totalEst = panelCost + inverterCost + batteryCost + installCost;
+            
+            const modeText = currentMode === 'sim' ? 'سب ایک ساتھ' : 'ایک وقت میں ایک چیز (موٹر + AC الگ)';
+            
+            const html = `
+                <div class="result">
+                    <h2>آپ کا تخمینہ (جون 2026) ✅</h2>
+                    <p><strong>موڈ:</strong> ${modeText}</p>
+                    <h3>روزانہ استعمال: <strong>${dailyKWh} kWh</strong></h3>
+                    
+                    <div class="recommend">
+                        <h3>تجویز کردہ سسٹم</h3>
+                        <p><strong>سسٹم سائز:</strong> ${systemSizeKW} kW</p>
+                        <p><strong>سولر پلیٹیں (550W N-Type):</strong> ${numPanels} پلیٹیں</p>
+                        <p><strong>انورٹر:</strong> ${inverterKW} kW Hybrid</p>
+                        <p><strong>بیٹری:</strong> ${batteryKWh} kWh LiFePO4</p>
+                    </div>
+                    
+                    <div class="recommend">
+                        <h3>تازہ لاگت تخمینہ (جون 2026)</h3>
+                        <p><strong>پینلز (${panelRate} روپے/واٹ):</strong> ${panelCost.toLocaleString('ur-PK')} روپے</p>
+                        <p><strong>انورٹر:</strong> ${inverterCost.toLocaleString('ur-PK')} روپے</p>
+                        <p><strong>بیٹری (45k/kWh):</strong> ${batteryCost.toLocaleString('ur-PK')} روپے</p>
+                        <p><strong>انسٹالیشن + سٹرکچر:</strong> ${installCost.toLocaleString('ur-PK')} روپے</p>
+                        <p><strong>کل تخمینہ:</strong> <strong>${totalEst.toLocaleString('ur-PK')} روپے</strong></p>
+                    </div>
+                    
+                    <div class="recommend">
+                        <h3>بہترین برانڈز</h3>
+                        <p><strong>پینلز:</strong> Longi / JA Solar / Jinko (N-Type)</p>
+                        <p><strong>انورٹر:</strong> Huawei / Growatt Hybrid</p>
+                        <p><strong>بیٹری:</strong> Pylontech / Knox / Dyness LiFePO4</p>
+                    </div>
+                    
+                    <button onclick="window.location.reload()" style="margin-top:20px;">دوبارہ حساب لگائیں</button>
+                </div>
+            `;
+            
+            document.getElementById('results').innerHTML = html;
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('results').classList.add('active');
+        }
+        
+        console.log("%cLuxeSolar PK - June 2026 Live Rates Loaded", "color:#00ff9d; font-size:16px;");
+    </script>
+</body>
+</html>
